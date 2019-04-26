@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 from openpyxl import Workbook
-
+import pandas as pd
 
 def loadExcel(file, **kwargs):
     '''
@@ -51,4 +51,16 @@ def index(number):
             number, mod = divmod(mod, 27)
             a = a + indexToAlpha(number)
             
+
+def loadFile(filename):
+    fileNameExtension = filename.split('.')[-1]
+    if 'csv' in fileNameExtension:
+        return pd.read_csv(filename)
+
+    elif 'xls' in fileNameExtension:
+        return pd.read_excel(filename)
+
+    else:
+        raise Exception("The file is not supported.!")
+
 
