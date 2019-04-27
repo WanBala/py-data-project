@@ -37,9 +37,9 @@ def findYearIndex(dataframe, length=25, repeat=3):
 
 
 def pdToExcel(dataframe, filename):
-    '''
+    """
         Writing Datatframe to a Excel file
-    '''
+    """
     pds = pdSeparation(dataframe)
     with pd.ExcelWriter(filename) as writer:
         for i, p in enumerate(pds):
@@ -47,10 +47,11 @@ def pdToExcel(dataframe, filename):
 
 
 def pdSeparation(dataframe, unit_sheet=1000000):
-    '''
+    """ Return a list including different pieces of dataframe.
+    
         an Excel Sheet can only have 1048576 rows,
         so seperate a dataframe to many pieces.
-    '''
+    """
     rows, _ = dataframe.shape
     a = []
     for i in range(rows // unit_sheet + 1):

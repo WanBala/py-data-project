@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def tranStraight(filename):
+def tranStraight(filename, to_path):
     """This function is customized
     """
     df = basics.loadFile(filename)
@@ -22,6 +22,6 @@ def tranStraight(filename):
         copy = basics.rowExtension(content, days)
         a = pd.concat([copy, cache[days]], axis=1)
         df_empty = pd.concat([df_empty, a], ignore_index=True)
-
-    basics.pdToExcel(df_empty, filename)
+    
+    basics.pdToExcel(df_empty, to_path + filename.split("\\")[-1])
 
