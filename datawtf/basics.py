@@ -1,13 +1,32 @@
 import numpy as np
 import pandas as pd
-            
+
+
+def loadFile(filename):
+    extension = filename.split(".")[-1]
+    if "csv" in extension:
+        return pd.read_csv(filename)
+    elif "xls" in extension:
+        return pd.read_excel(filename)
+    else:
+        raise Exception("File not be supported!")
+
 
 def findYearIndex(dataframe, length=25, repeat=3):
-    '''
-        Find which cell includes year
-    '''
+    """Return  the index of cell including year.
+
+
+    Parameters
+    ----------
+    dataframe : class <pandas.DataFrame>
+    length : int
+        How long will be checked.
+    repeat : int
+        How many times to retry to find Index.
+    
+    """
     for j in range(repeat):
-        a = dataframe.iloc[j*3, 0:25].values
+        a = dataframe.iloc[j*3, :length].values
         for i in range(length - 1):
             try:
                 if 1850 < a[i] < 2050 and 0 < a[i+1] < 13:
@@ -29,8 +48,8 @@ def pdToExcel(dataframe, filename):
 
 def pdSeparation(dataframe, unit_sheet=1000000):
     '''
-        Because an Excel Sheet can only have 1048576 rows, 
-        we seperate a dataframe to many pieces
+        an Excel Sheet can only have 1048576 rows,
+        so seperate a dataframe to many pieces.
     '''
     rows, _ = dataframe.shape
     a = []
@@ -81,3 +100,9 @@ def emptyDF(**args):
         Easily to use for concat or stack operation in loops
     '''
     return pd.DataFrame(**args)
+
+
+def rowExtension(content, times):
+    """extend [1 x n] dataframe to [times x n]
+    """
+    return pd.concat([content] * times, axis=1, ignore_index=True).T
