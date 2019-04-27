@@ -24,3 +24,4 @@ def tranStraight(filename):
         df_empty = pd.concat([df_empty, a], ignore_index=True)
 
     basics.pdToExcel(df_empty, filename)
+
