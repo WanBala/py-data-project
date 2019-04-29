@@ -45,7 +45,8 @@ class Checker():
                     self._errorhandler(e)
                 else:
                     self.defaultMessage(i)
-                
+            except:
+                self.defaultMessage(i)
 
     def inspection(self):
         if not self.content or not self._func:
