@@ -1,12 +1,12 @@
 import sys
-sys.path.append(r"C:\Users\YU-TING\Documents\GitHub\py-data-project")
+sys.path.append(r"C:\Users\tingt\Documents\GitHub\py-data-project")
 import datawtf
 import pandas as pd
 import numpy as np
 import os
 import time
-os.chdir(r"C:\Users\YU-TING\Desktop\New folder (2)")
-filename = r"C:\Users\YU-TING\Desktop\New folder (2)\河川流量(日)_南區(_2016.12)(已標記).xlsx"
+os.chdir(r"C:\Users\tingt\Desktop\新增資料夾 (2)")
+filename = r"C:\Users\tingt\Desktop\新增資料夾 (2)\河川流量(日)_南區(_2016.12)(已標記).xlsx"
 df = datawtf.loadFile(filename)
 
 
@@ -42,8 +42,19 @@ def makeUpLacks(df, stack):
     index = df.columns[month_index +1 :]
     lack = pd.DataFrame(np.array([-999998] * len(index)), index = index)
     last_st = 0
+    warm_up = True
     for i in range(0, rows):
         if last_st != df.iloc[i,:][year_index-1].rstrip():
+            if warm_up:
+                warm_up = False
+            else:
+                year = df.iloc[i - 1,:][year_index]
+                month = df.iloc[i - 1,:][month_index]
+                lackNumber = howManyLack((year, month),(year +1 , 1))
+                if lackNumber:
+                    lacks = pd.concat((df.iloc[i-1,:month_index + 1], lack))
+                    extension = datawtf.rowExtension(lacks, lackNumber)
+                    stack = fillInformation(extension, stack, (year, month), year_index)                
             last_st = df.iloc[i, :][year_index-1].rstrip()
             year = df.iloc[i,:][year_index]
             month = df.iloc[i,:][month_index]
